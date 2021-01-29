@@ -26,6 +26,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:hint="Correo Electrónico"
                 android:inputType="textEmailAddress"
                 />
@@ -38,11 +39,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:hint="Contraseña"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
