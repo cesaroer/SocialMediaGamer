@@ -90,6 +90,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -122,6 +123,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -141,23 +143,20 @@
             android:layout_marginTop="10dp"/>
 
 
-
-
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login now"
-            android:textSize="18dp"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_btn"
-            android:backgroundTint="@color/accent"
-            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="60dp"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            />
-
+            android:background="@drawable/rounded_btn"
+            android:backgroundTint="@color/accent"
+            android:text="Login now"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="normal" />
 
 
     </LinearLayout>
