@@ -6,29 +6,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/wp5750720_gradient_phone_wallpapers"
     tools:context=".MainActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000000"
-        android:alpha="0.3"
-        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
-        android:theme="@style/Theme.MaterialComponents"
         >
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/rookmotion_logo"
-            android:layout_gravity="center"/>
+        <com.github.florent37.shapeofview.shapes.CutCornerView
+            android:id="@+id/clipCorner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:elevation="0dp"
+            >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                android:alpha="1"
+                />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:src="@drawable/rookmotion_logo"
+                android:layout_gravity="center|top"/>
+
+        </com.github.florent37.shapeofview.shapes.CutCornerView>
+
+        <com.github.florent37.shapeofview.shapes.TriangleView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:elevation="0dp"
+            app:shape_triangle_percentBottom="0.5"
+            app:shape_triangle_percentLeft="0"
+            app:shape_triangle_percentRight="0"
+            >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                android:alpha="1"
+                />
+
+        </com.github.florent37.shapeofview.shapes.TriangleView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Login"
+            android:textColor="@color/semiBlack"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,12 +73,13 @@
             android:orientation="horizontal"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             >
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_baseline_alternate_email_24"
+                android:src="@drawable/ic_email_dark"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"/>
 
@@ -49,7 +87,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/EditTextWhite"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -70,20 +107,18 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:theme="@style/Theme.MaterialComponents"
             >
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_password"
+                android:src="@drawable/ic_password_dark"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/EditTextWhite"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -95,16 +130,28 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:textColor="@color/letterGray"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
 
 
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
-            android:textColor="@color/black"
+            android:text="Login now"
+            android:textSize="18dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:background="@drawable/rounded_btn"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/accent"
             android:textStyle="bold"
             android:layout_marginTop="60dp"
             android:layout_marginRight="20dp"
@@ -118,7 +165,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center"
         android:layout_gravity="bottom"
         android:layout_marginBottom="20dp"
@@ -128,8 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¿No tienes cuenta?"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/white"
+            android:textColor="@color/letterGray"
             android:textSize="17sp"
             />
 
@@ -138,8 +184,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registrate aquí"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/white"
+            android:textColor="@color/blueLight"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
             android:textSize="17sp"
             />

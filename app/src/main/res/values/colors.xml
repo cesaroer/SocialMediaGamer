@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="accent">#305ed7</color>
     <color name="semiWhite">#f5f6fb</color>
+    <color name="semiBlack">#2f3a54</color>
+    <color name="letterGray">#939dad</color>
+    <color name="blueLight">#577cda</color>
 </resources>
