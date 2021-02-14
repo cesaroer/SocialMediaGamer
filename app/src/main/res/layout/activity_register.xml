@@ -188,6 +188,7 @@
         android:backgroundTint="@color/accent"
         android:layout_gravity="bottom"
         android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="20dp"
         android:textAllCaps="false"
