@@ -13,8 +13,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Firebase
     FirebaseAuth mAuth;
+    FirebaseFirestore mFirestore;
 
 
 
@@ -45,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnRegister =  findViewById(R.id.btnRegister);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
 
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if(password.length() >= 6 ){
 
                         // Send email and pass to Firebase
-                        createUser(email,password);
+                        createUser(email,password, userName);
                     }else {
 
                         Toast.makeText(this,"Las contraseña debe tener al menos 6 caracteres",Toast.LENGTH_LONG).show();
@@ -96,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void createUser(String email, String password) {
+    private void createUser(String email, String password, String userName) {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -104,7 +109,24 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
 
-                    Toast.makeText(RegisterActivity.this, "Usuario registrado correctamente " , Toast.LENGTH_SHORT).show();
+                    String id = mAuth.getCurrentUser().getUid();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("email", email);
+                    map.put("userName", userName);
+
+                    mFirestore.collection("Users").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if(task.isSuccessful()) {
+
+                                Toast.makeText(RegisterActivity.this, "Usuario almacenado correctamente en DB " , Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Toast.makeText(RegisterActivity.this, "Usuario no se pudo almacenar en BD " , Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }else {
 
                     Toast.makeText(RegisterActivity.this, "No se pude registrar el usuario " , Toast.LENGTH_SHORT).show();
