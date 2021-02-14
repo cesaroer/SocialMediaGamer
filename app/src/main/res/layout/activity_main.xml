@@ -155,16 +155,27 @@
             android:text="Login now"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="normal" />
 
-        <com.google.android.gms.common.SignInButton
+        <Button
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginLeft="25dp"/>
+            android:layout_marginRight="20dp"
+            android:paddingStart="15dip"
+            android:paddingEnd="16dip"
+            android:background="@drawable/rounded_btn_with_border"
+            app:elevation="2dp"
+            android:stateListAnimator="@null"
+            android:text="Sign in with Google"
+            android:textSize="16sp"
+            android:textColor="@color/accent"
+            android:textAllCaps="false"
+            android:drawablePadding="5dip"
+            app:drawableStartCompat="@drawable/icon_google" />
 
 
     </LinearLayout>
