@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.socialmediagamer.R;
+import com.example.socialmediagamer.models.User;
+import com.example.socialmediagamer.providers.AuthProvider;
+import com.example.socialmediagamer.providers.UserProvider;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,9 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputEditText mTextInputUserName,mTextInputEmail,mTextInputPassword,mTextInputRepeatedPassword;
     Button mBtnRegister;
 
-    // Firebase
-    FirebaseAuth mAuth;
-    FirebaseFirestore mFirestore;
+    AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
 
 
 
@@ -49,8 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
         mTextInputRepeatedPassword = findViewById(R.id.textInputRepeatedPassword);
         mBtnRegister =  findViewById(R.id.btnRegister);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
+        mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
 
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -104,34 +107,37 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createUser(String email, String password, String userName) {
 
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        mAuthProvider.register(email,password).addOnCompleteListener(task -> {
 
-                if (task.isSuccessful()) {
+            if (task.isSuccessful()) {
 
-                    String id = mAuth.getCurrentUser().getUid();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("email", email);
-                    map.put("userName", userName);
+                String id = mAuthProvider.getUUID();
+                Map<String, Object> map = new HashMap<>();
+                map.put("email", email);
+                map.put("userName", userName);
 
-                    mFirestore.collection("Users").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                User user = new User();
+                user.setId(id);
+                user.setEmail(email);
+                user.setUserName(userName);
+                //user.setPassword(password);
 
-                            if(task.isSuccessful()) {
+                mUserProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                                Toast.makeText(RegisterActivity.this, "Usuario almacenado correctamente en DB " , Toast.LENGTH_SHORT).show();
-                            } else {
+                        if(task.isSuccessful()) {
 
-                                Toast.makeText(RegisterActivity.this, "Usuario no se pudo almacenar en BD " , Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(RegisterActivity.this, "Usuario almacenado correctamente en DB " , Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            Toast.makeText(RegisterActivity.this, "Usuario no se pudo almacenar en BD " , Toast.LENGTH_SHORT).show();
                         }
-                    });
-                }else {
+                    }
+                });
+            }else {
 
-                    Toast.makeText(RegisterActivity.this, "No se pude registrar el usuario " , Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(RegisterActivity.this, "No se pude registrar el usuario " , Toast.LENGTH_SHORT).show();
             }
         });
     }

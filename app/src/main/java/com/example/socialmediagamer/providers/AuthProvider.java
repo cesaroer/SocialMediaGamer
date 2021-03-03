@@ -27,6 +27,10 @@ public class AuthProvider {
         return mAuth.signInWithCredential(credential);
     }
 
+    public Task<AuthResult> register(String email, String password) {
+        return mAuth.createUserWithEmailAndPassword(email,password);
+    }
+
     public String getUUID() {
 
         if(mAuth.getCurrentUser() != null) {

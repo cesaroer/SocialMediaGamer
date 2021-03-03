@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.socialmediagamer.R;
+import com.example.socialmediagamer.models.User;
+import com.example.socialmediagamer.providers.AuthProvider;
+import com.example.socialmediagamer.providers.UserProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -24,9 +27,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
     TextInputEditText mTextInputUserName;
     Button mBtnConfirm;
 
-    // Firebase
-    FirebaseAuth mAuth;
-    FirebaseFirestore mFirestore;
+    AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
 
 
 
@@ -38,15 +40,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mTextInputUserName = findViewById(R.id.textInputUserName);
         mBtnConfirm =  findViewById(R.id.btnRegister);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
+        mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
 
-        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                register();
-            }
-        });
+        mBtnConfirm.setOnClickListener(v -> register());
     }
 
     private void register() {
@@ -64,22 +61,22 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void updateUser(String userName) {
-        String id = mAuth.getCurrentUser().getUid();
+        String id = mAuthProvider.getUUID();
         Map<String, Object> map = new HashMap<>();
         map.put("userName", userName);
+        User user = new User();
+        user.setUserName(userName);
+        user.setId(id);
 
-        mFirestore.collection("Users").document(id).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+        mUserProvider.update(user).addOnCompleteListener(task -> {
 
-                if(task.isSuccessful()) {
+            if(task.isSuccessful()) {
 
-                    Intent intent = new Intent(CompleteProfileActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                } else {
+                Intent intent = new Intent(CompleteProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+            } else {
 
-                    Toast.makeText(CompleteProfileActivity.this, "Usuario no se pudo almacenar en BD " , Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(CompleteProfileActivity.this, "Usuario no se pudo almacenar en BD " , Toast.LENGTH_SHORT).show();
             }
         });
     }
