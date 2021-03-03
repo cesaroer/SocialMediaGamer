@@ -3,6 +3,7 @@ package com.example.socialmediagamer.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class CompleteProfileActivity extends AppCompatActivity {
 
     TextInputEditText mTextInputUserName;
@@ -29,6 +32,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
     AuthProvider mAuthProvider;
     UserProvider mUserProvider;
+    AlertDialog mDialog;
+
 
 
 
@@ -44,6 +49,11 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mUserProvider = new UserProvider();
 
         mBtnConfirm.setOnClickListener(v -> register());
+        mDialog =  new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Cargando...")
+                .setCancelable(false)
+                .build();
     }
 
     private void register() {
@@ -67,8 +77,10 @@ public class CompleteProfileActivity extends AppCompatActivity {
         User user = new User();
         user.setUserName(userName);
         user.setId(id);
+        mDialog.show();
 
         mUserProvider.update(user).addOnCompleteListener(task -> {
+            mDialog.dismiss();
 
             if(task.isSuccessful()) {
 

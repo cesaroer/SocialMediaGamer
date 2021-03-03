@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView mTextViewRegister;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private final int REQUEST_CODE_GOOGLE = 1;
     UserProvider mUserProvider;
+    AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
         // Firebase Email auth
         mAuthProvider = new AuthProvider();
         mUserProvider = new UserProvider();
+
+        mDialog =  new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Cargando...")
+                .setTheme(R.style.Custom)
+                .setCancelable(false)
+                .build();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -108,9 +119,11 @@ public class MainActivity extends AppCompatActivity {
         String email = mTextInputEmail.getText().toString();
         String password = mTextInputPassword.getText().toString();
 
+        mDialog.show();
         mAuthProvider.login(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                mDialog.dismiss();
 
                 if(task.isSuccessful()) {
 
@@ -128,16 +141,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        mDialog.show();
 
         mAuthProvider.googleLogin(account).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             
                             String id = mAuthProvider.getUUID();
                             checkUserExistOnFirestore(id);
                         } else {
 
+                            mDialog.dismiss();
                             Log.w("ERROR", "signInWithCredential:failure", task.getException());
                             Toast.makeText(MainActivity.this, "No se pudo iniciar sesión con google", Toast.LENGTH_SHORT).show();
                         }
@@ -152,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 
                 if (documentSnapshot.exists()) {
+                    mDialog.dismiss();
 
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -165,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     mUserProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+
+                            mDialog.dismiss();
                             if(task.isSuccessful()) {
 
                                 Intent intent = new Intent(MainActivity.this, CompleteProfileActivity.class);
